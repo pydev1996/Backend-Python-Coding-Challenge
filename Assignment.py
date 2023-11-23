@@ -80,7 +80,7 @@ def main():
     parking_lot.save_mapping_to_json('vehicle_mapping.json')
 
     # Upload the JSON file to S3
-   # upload_to_s3('vehicle_mapping.json', 'bucket2', 'vehicle_mapping.json') # Here change the bucket name 
+    upload_to_s3('vehicle_mapping.json', 'bucket2', 'vehicle_mapping.json') # Here change the bucket name 
 
 if __name__ == "__main__":
     main()
