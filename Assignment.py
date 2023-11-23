@@ -1,6 +1,14 @@
 import random
 import json 
 import boto3
+import configparser
+
+config = configparser.ConfigParser()
+config.read('.config')
+
+aws_access_key_id = config.get('aws_credentials', 'aws_access_key_id')
+aws_secret_access_key = config.get('aws_credentials', 'aws_secret_access_key')
+
 
 # parking lot class that takes in a square footage size as input
 class ParkingLot:
@@ -29,7 +37,7 @@ class ParkingLot:
             json.dump(self.vehicle_mapping, file)
 #Function for upload json data in S3 Bucket
 def upload_to_s3(file_path, bucket_name, object_key):
-    s3 = boto3.client('s3')
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     s3.upload_file(file_path, bucket_name, object_key)
 
 #car class that takes in a 7 digit license plate and sets it as a property
@@ -72,7 +80,7 @@ def main():
     parking_lot.save_mapping_to_json('vehicle_mapping.json')
 
     # Upload the JSON file to S3
-    upload_to_s3('vehicle_mapping.json', 'bucket2', 'vehicle_mapping.json') # Here change the bucket name 
+   # upload_to_s3('vehicle_mapping.json', 'bucket2', 'vehicle_mapping.json') # Here change the bucket name 
 
 if __name__ == "__main__":
     main()
